@@ -1,0 +1,52 @@
+[
+	{
+		"codigo": "IB706",
+		"origen": "MADRID",
+		"destino":"BARCELONA",
+		"fecha": "2020-12-17",
+		"hora": "18:50",
+		"plazas_totales": 200,
+		"plazas_disponibles": 198,
+		"vendidos":[
+			{
+				"asiento": 1,
+				"dni":"33344455G",
+				"apellido": "Rodriguez",
+                "nombre": "Pepe",
+                "dniPagador": "44556677H",
+                "tarjeta": "038 0025 5553 5553",
+                "codigoVenta": "GHJ7766GG"
+            },
+			{
+				"asiento": 2,
+				"dni":"44556677H",
+				"apellido": "Rodriguez",
+                "nombre": "María",
+                "dniPagador": "44556677H",
+                "tarjeta": "038 0025 5553 5553",
+                "codigoVenta": "GHJ7766GG"
+			}            
+		]
+	},
+	{
+		"id":2,
+		"codigo": "IB707",
+		"origen": "MADRID",
+		"destino":"MURCIA",
+		"fecha": "2020-12-17",
+		"hora": "19:00",
+		"plazas_totales": 200,
+		"plazas_disponibles": 200
+	},	
+	{
+		"id":3,
+		"codigo": "IB708",
+		"origen": "MADRID",
+		"destino":"BILBAO",
+		"fecha": "2020-12-18",
+		"hora": "18:50",
+		"plazas_totales": 200,
+		"plazas_disponibles": 200
+	}
+	
+]
