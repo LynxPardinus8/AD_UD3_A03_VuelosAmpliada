@@ -150,21 +150,24 @@ public class MongoManager {
 	}
 
 	private static void mostrar(MongoClient mongo) {
-		MongoDatabase db = mongo.getDatabase("vuelos2_0");
+        MongoDatabase db = mongo.getDatabase("vuelos2_0");
 
-		MongoCollection coleccionVuelos = db.getCollection("vuelos");
+        MongoCollection coleccionVuelos = db.getCollection("vuelos");
 
-		FindIterable fi = coleccionVuelos.find();
+        FindIterable fi = coleccionVuelos.find();
 
-		MongoCursor cur = fi.cursor();
+        MongoCursor cur = fi.cursor();
 
-		System.out.println("Listado de vuelos: ");
-
-		while (cur.hasNext()) {
-			System.out.println(" - " + ((Document) cur.next()).toJson());
-		}
-		System.out.println();
-	}
+        while (cur.hasNext()) {
+            Document obj = (Document) cur.next();
+            String vuelos = "Codigo: " + obj.get("codigo") + " | Origen: " + obj.get("origen") + " | Destino: "
+                    + obj.get("destino") + " | Fecha: " + obj.get("fecha") + " | Hora: " + obj.get("hora")
+                    + " | Plazas totales: " + obj.get("plazas_totales") + " | Plazas disponibles: "
+                    + obj.get("plazas_disponibles");
+            System.out.println(vuelos);
+        }
+        System.out.println();
+    }
 
 	public static void comprar(MongoClient mongo, String codigo, String asiento, String dni, String apellido,
 			String nombre, String dniP, String tarjeta) {
