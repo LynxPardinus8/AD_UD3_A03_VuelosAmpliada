@@ -170,40 +170,53 @@ public class MongoManager {
     }
 
 	public static void comprar(MongoClient mongo, String codigo, String asiento, String dni, String apellido,
-			String nombre, String dniP, String tarjeta) {
+            String nombre, String dniP, String tarjeta) {
 
-		MongoDatabase db = mongo.getDatabase("vuelos2_0");
+        MongoDatabase db = mongo.getDatabase("vuelos2_0");
 
-		MongoCollection coleccionVuelos = db.getCollection("vuelos");
+        MongoCollection coleccionVuelos = db.getCollection("vuelos");
 
-		int plazasDisponibles = -1;
+        int restarPlazas = -1;
 
-		String codV = codAleatorio().toUpperCase();
+        int plazasDisponibles;
 
-		Document quienCambio = new Document("codigo", codigo);
-		Document cambios = new Document();
+        FindIterable fi = coleccionVuelos.find();
 
-		cambios.append("asiento", asiento);
-		cambios.append("dni", dni);
-		cambios.append("apellido", apellido);
-		cambios.append("nombre", nombre);
-		cambios.append("dniPagador", dniP);
-		cambios.append("tarjeta", tarjeta);
-		cambios.append("codigoVenta", codV);
+        MongoCursor cur = fi.cursor();
 
-		System.out.println("Su codigo de venta es: " + codV);
+        Document pd = (Document) cur.next();
+        plazasDisponibles = pd.getInteger("plazas_disponibles");
 
-		Document auxSet1 = new Document("vendidos", cambios);
-		Document auxSet2 = new Document("plazas_disponibles", plazasDisponibles);
-		Document auxSet3 = new Document("$push", auxSet1);
-		Document auxSet4 = new Document("$inc", auxSet2);
+        String codV = codAleatorio().toUpperCase();
 
-		coleccionVuelos.updateOne(quienCambio, auxSet3);
-		coleccionVuelos.updateOne(quienCambio, auxSet4);
-		
-		System.out.println("Billete comprado con exito");
+        Document quienCambio = new Document("codigo", codigo);
+        Document cambios = new Document();
 
-	}
+        cambios.append("asiento", asiento);
+        cambios.append("dni", dni);
+        cambios.append("apellido", apellido);
+        cambios.append("nombre", nombre);
+        cambios.append("dniPagador", dniP);
+        cambios.append("tarjeta", tarjeta);
+        cambios.append("codigoVenta", codV);
+
+        System.out.println("Su codigo de venta es: " + codV);
+
+        Document auxSet1 = new Document("vendidos", cambios);
+        Document auxSet2 = new Document("plazas_disponibles", restarPlazas);
+        Document auxSet3 = new Document("$push", auxSet1);
+        Document auxSet4 = new Document("$inc", auxSet2);
+
+        if (plazasDisponibles == 0) {
+            System.out.println("No hay plazas disponibles en estos momentos");
+        } else {
+            coleccionVuelos.updateOne(quienCambio, auxSet3);
+            coleccionVuelos.updateOne(quienCambio, auxSet4);
+        }
+
+        System.out.println("Billete comprado con exito");
+
+    }
 
 	public static void borrar(MongoClient mongo, String codigo, String dni, String codV) {
 
